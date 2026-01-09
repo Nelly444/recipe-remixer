@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import {useEffect, useState} from 'react';
 
 function App() {
+  const [recipes, setRecipes] = useState([]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/recipes')
+      .then(response => response.json())
+      .then(data => setRecipes(data))
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  <div style={{ padding: "20px" }}>
+    <h1>Recipe Remixer Demo</h1>
+    {recipes.map((recipe) => (
+      <div key={recipe.id} style={{ border: "1px solid black", margin: "10px", padding: "10px" }}>
+        <h2>{recipe.title}</h2>
+        <p><b>Ingredients:</b> {recipe.ingredients.join(", ")}</p>
+        <p><b>Instructions:</b> {recipe.instructions}</p>
+      </div>
+    ))}
+  </div>
+);
+
 }
 
 export default App;
